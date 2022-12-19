@@ -26,8 +26,7 @@ class Linter(Abstract):
     def run_check(self, ctx: RunContext):
         """Run Mccabe code checker."""
         params = ctx.get_params("mccabe")
-        options = ctx.options
-        if options:
+        if options := ctx.options:
             params.setdefault("max-complexity", options.max_complexity)
 
         McCabeChecker.max_complexity = int(params.get("max-complexity", 10))

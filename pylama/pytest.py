@@ -78,8 +78,7 @@ class PylamaItem(pytest.Item):
         return True
 
     def runtest(self):
-        errors = check_file(self.fspath)
-        if errors:
+        if errors := check_file(self.fspath):
             out = "\n".join(err.format(DEFAULT_FORMAT) for err in errors)
             raise PylamaError(out)
 

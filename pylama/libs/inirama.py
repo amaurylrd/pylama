@@ -45,10 +45,7 @@ class Scanner:
         """
         self.reset(source)
         if patterns:
-            self.patterns = []
-            for k, r in patterns:
-                self.patterns.append((k, re.compile(r)))
-
+            self.patterns = [(k, re.compile(r)) for k, r in patterns]
         if ignore:
             self.ignore = ignore
 
@@ -77,8 +74,7 @@ class Scanner:
 
             # Check patterns
             for p, regexp in self.patterns:
-                m = regexp.match(self.source, self.pos)
-                if m:
+                if m := regexp.match(self.source, self.pos):
                     best_pat = p
                     best_pat_len = len(m.group(0))
                     break
@@ -170,9 +166,7 @@ class InterpolationSection(Section):
 
         """
 
-        if name in self:
-            return self[name]
-        return default
+        return self[name] if name in self else default
 
     def __interpolate__(self, math):
         try:
@@ -248,7 +242,7 @@ class Namespace(object):
         :return :class:`inirama.Section`: section
 
         """
-        return self.sections.get(self.default_section, dict())
+        return self.sections.get(self.default_section, {})
 
     def read(self, *files, **params):
         """ Read and parse INI files.

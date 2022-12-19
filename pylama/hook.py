@@ -30,18 +30,17 @@ def git_hook(error=True):
 
     options = parse_options()
     setup_logger(options)
-    candidates = [f.decode("utf-8") for f in files_modified]
-    if candidates:
+    if candidates := [f.decode("utf-8") for f in files_modified]:
         errors = check_paths(candidates, options, rootdir=getcwd())
         display_errors(errors, options)
         sys.exit(int(error and bool(errors)))
 
 
-def hg_hook(_, repo, node=None, **kwargs):  # noqa
+def hg_hook(_, repo, node=None, **kwargs):    # noqa
     """Run pylama after mercurial commit."""
-    seen = set()
     candidates = []
     if len(repo):
+        seen = set()
         for rev in range(repo[node], len(repo)):
             for file_ in repo[rev].files():
                 file_ = op.join(repo.root, file_)

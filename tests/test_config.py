@@ -13,11 +13,11 @@ def test_config(parse_options):
     assert "pylama" in options.paths[0]
 
     options = parse_options(["-l", "pydocstyle,pycodestyle,unknown", "-i", "E"])
-    assert set(options.linters) == set(["pydocstyle", "pycodestyle"])
+    assert set(options.linters) == {"pydocstyle", "pycodestyle"}
     assert options.ignore == {"E"}
 
     options = parse_options("-o dummy dummy.py".split())
-    assert set(options.linters) == set(["pycodestyle", "mccabe", "pyflakes"])
+    assert set(options.linters) == {"pycodestyle", "mccabe", "pyflakes"}
     assert options.skip == []
 
 

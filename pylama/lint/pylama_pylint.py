@@ -36,8 +36,7 @@ class Linter(BaseLinter):
         """Pylint code checking."""
         logger.debug("Start pylint")
         params = ctx.get_params("pylint")
-        options = ctx.options
-        if options:
+        if options := ctx.options:
             params.setdefault("max_line_length", options.max_line_length)
             params.setdefault("confidence", options.pylint_confidence)
 
