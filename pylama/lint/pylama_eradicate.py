@@ -22,7 +22,7 @@ class Linter(Abstract):
             ctx.push(
                 lnum=line_number,
                 source="eradicate",
-                text=str("Found commented out code"),
+                text="Found commented out code",
                 number="E800",
                 type="E",
             )

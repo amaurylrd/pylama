@@ -29,11 +29,10 @@ class Linter(BaseLinter):
             help="Comma-separated list of decorators to ignore",
         )
 
-    def run_check(self, ctx: RunContext):  # noqa
+    def run_check(self, ctx: RunContext):    # noqa
         """Check code with vulture."""
         params = ctx.get_params("vulture")
-        options = ctx.options
-        if options:
+        if options := ctx.options:
             params.setdefault("min-confidence", options.vulture_min_confidence)
             params.setdefault("ignore-names", options.vulture_ignore_names)
             params.setdefault("ignore-decorators", options.vulture_ignore_decorators)

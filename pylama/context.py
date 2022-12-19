@@ -76,8 +76,7 @@ class RunContext:  # pylint: disable=R0902
 
         # Read/parse modeline
         if not self.skip:
-            modeline = MODELINE_RE(self.source)
-            if modeline:
+            if modeline := MODELINE_RE(self.source):
                 values = modeline.group(1).split(":")
                 self.update_params(**dict(v.split("=", 1) for v in values))  # type: ignore
 

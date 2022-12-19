@@ -42,11 +42,10 @@ class Linter(Abstract):
         except ArgumentError:
             pass
 
-    def run_check(self, ctx: RunContext):  # noqa  # noqa
+    def run_check(self, ctx: RunContext):    # noqa  # noqa
         """Check code with Radon."""
         params = ctx.get_params("radon")
-        options = ctx.options
-        if options:
+        if options := ctx.options:
             params.setdefault("complexity", options.max_complexity)
             params.setdefault("no_assert", options.radon_no_assert)
             params.setdefault("show_closures", options.radon_show_closures)

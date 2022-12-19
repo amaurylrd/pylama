@@ -40,14 +40,14 @@ def split_csp_str(val: Union[Collection[str], str]) -> Set[str]:
     """Split comma separated string into unique values, keeping their order."""
     if isinstance(val, str):
         val = val.strip().split(",")
-    return set(x for x in val if x)
+    return {x for x in val if x}
 
 
 def prepare_sorter(val: Union[Collection[str], str]) -> Optional[Dict[str, int]]:
     """Parse sort value."""
     if val:
         types = split_csp_str(val)
-        return dict((v, n) for n, v in enumerate(types, 1))
+        return {v: n for n, v in enumerate(types, 1)}
 
     return None
 
@@ -83,7 +83,7 @@ def setup_parser() -> ArgumentParser:
         help="Paths to files or directories for code check.",
     )
     parser.add_argument(
-        "--version", action="version", version="%(prog)s " + __version__
+        "--version", action="version", version=f"%(prog)s {__version__}"
     )
     parser.add_argument("--verbose", "-v", action="store_true", help="Verbose mode.")
     parser.add_argument(
@@ -102,9 +102,7 @@ def setup_parser() -> ArgumentParser:
         "-l",
         default=_Default(",".join(DEFAULT_LINTERS)),
         type=parse_linters,
-        help=(
-            f"Select linters. (comma-separated). Choices are {','.join(s for s in LINTERS)}."
-        ),
+        help=f"Select linters. (comma-separated). Choices are {','.join(LINTERS)}.",
     )
     parser.add_argument(
         "--from-stdin",
@@ -183,9 +181,7 @@ def parse_options(  # noqa
     """Parse options from command line and configuration files."""
     # Parse args from command string
     parser = setup_parser()
-    actions = dict(
-        (a.dest, a) for a in parser._actions
-    )  # pylint: disable=protected-access
+    actions = {a.dest: a for a in parser._actions}
 
     options = parser.parse_args(args or [])
     options.file_params = {}
@@ -247,10 +243,7 @@ def process_value(actions: Dict, name: str, value: Any) -> Any:
     if callable(action.type):
         return action.type(value)
 
-    if action.const:
-        return bool(int(value))
-
-    return value
+    return bool(int(value)) if action.const else value
 
 
 def get_config(ini_path: str = None, rootdir: Path = None) -> inirama.Namespace:
